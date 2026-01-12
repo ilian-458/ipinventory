@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .logo-text {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        color: var(--primary-red);
+        font-size: 3rem;
+        letter-spacing: -2px;
+    }
+    .form-control-custom {
+        background-color: #C4C4C4;
+        border: 1px solid #aaa;
+        border-radius: 10px;
+        padding-left: 45px;
+    }
+    .input-icon {
+        position: absolute;
+        left: 15px;
+        top: 12px;
+        font-size: 1.2rem;
+        color: black;
+        z-index: 10;
+    }
+    .btn-custom-white {
+        background-color: white;
+        color: var(--primary-red);
+        border-radius: 25px;
+        padding: 10px 40px;
+        font-weight: bold;
+        border: none;
+        text-transform: uppercase;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid h-100">
+    <div class="row h-100">
+        
+        <div class="col-md-7 col-lg-8 d-flex flex-column justify-content-center align-items-center bg-white position-relative">
+            <div class="mb-4 text-center">
+                <h1 class="logo-text">ipInvenTory</h1>
+                <hr style="width: 100%; border-top: 2px solid var(--primary-red); opacity: 1;">
+            </div>
+
+            <div class="w-100" style="max-width: 500px; padding: 20px;">
+                {% block auth_form %}{% endblock %}
+            </div>
+        </div>
+
+        <div class="col-md-5 col-lg-4 d-flex flex-column justify-content-center align-items-center text-center text-white p-5" 
+             style="background-color: var(--primary-red);">
+            
+            <div class="position-absolute top-0 end-0 p-3">
+                <i class="fas fa-toggle-on fa-2x"></i>
+            </div>
+
+            <h2 class="mb-3">{% block right_title %}Bienvenue{% endblock %}</h2>
+            <p class="mb-5">{% block right_text %}{% endblock %}</p>
+            
+            <p class="mb-3">{% block right_question %}Question ?{% endblock %}</p>
+            <a href="{% block right_link_url %}#{% endblock %}" class="btn btn-custom-white">
+                {% block right_link_text %}ACTION{% endblock %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

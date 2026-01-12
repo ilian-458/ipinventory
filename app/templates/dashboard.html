@@ -1,0 +1,340 @@
+{% extends "base.html" %}
+
+{% block title %}IPInventory - Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* --- VARIABLES & GLOBAL --- */
+    :root {
+        --primary-red: #dd1d2a; 
+        --sidebar-bg: #2C2C2C; /* Gris très foncé presque noir */
+        --content-bg: #E0E0E0; /* Le fond gris clair de la maquette */
+        --text-dark: #333;
+    }
+
+    body {
+        background-color: var(--content-bg);
+        overflow: hidden; /* On gère le scroll dans la zone principale */
+    }
+
+    .dashboard-wrapper {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+    }
+
+    /* --- 1. SIDEBAR (GAUCHE) --- */
+    .sidebar {
+        width: 70px; /* Largeur fixe */
+        background-color: var(--sidebar-bg);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 0;
+        flex-shrink: 0;
+        z-index: 100;
+    }
+
+    /* Logo du haut dans la sidebar (Carré rouge avec motif) */
+    .sidebar-logo-area {
+        width: 70px;
+        height: 60px;
+        background-color: white; /* Le petit carré blanc sous le logo */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .sidebar-logo-img {
+        color: var(--primary-red);
+        font-size: 2rem;
+    }
+
+    /* Icones du menu */
+    .sidebar-icon {
+        color: #999;
+        font-size: 1.4rem;
+        margin: 15px 0;
+        cursor: pointer;
+        transition: color 0.3s;
+        position: relative;
+    }
+    .sidebar-icon:hover, .sidebar-icon.active {
+        color: white;
+    }
+
+    /* Le bloc USER tout en bas (Rouge plein) */
+    .sidebar-bottom {
+        margin-top: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .user-profile-block {
+        background-color: var(--primary-red);
+        width: 100%;
+        height: 70px; /* Carré en bas */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 1.5rem;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+    .user-profile-block:hover {
+        background-color: #b71c1c;
+    }
+
+    /* --- 2. HEADER (HAUT) --- */
+    .top-header {
+        background-color: var(--primary-red);
+        color: white;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 20px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .header-title {
+        font-size: 1.4rem;
+        font-weight: 400;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    /* --- 3. CONTENU PRINCIPAL --- */
+    .main-content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        background-color: var(--content-bg);
+    }
+
+    .work-area {
+        padding: 20px 30px;
+        overflow-y: auto;
+        height: calc(100vh - 60px);
+    }
+
+    /* --- FILTRES (BOUTONS ROUGES) --- */
+    .filter-buttons {
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: nowrap;
+        gap: 10px;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    .category-btn {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        border-radius: 5px; /* Coins légèrement arrondis */
+        padding: 8px 16px;
+        font-weight: 600;
+        font-size: 0.85rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    .category-btn.active {
+        background-color: #a31515; /* Plus foncé pour l'actif */
+    }
+
+    /* --- BARRE DE RECHERCHE (BLANCHE FLOTTANTE) --- */
+    .search-row {
+        margin-bottom: 25px;
+    }
+    .search-input {
+        background-color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px 15px;
+        width: 100%;
+        color: #555;
+        font-weight: 500;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Légère ombre */
+    }
+    .search-input::placeholder {
+        color: #aaa;
+        font-weight: 400;
+    }
+    .btn-reset {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 10px;
+        width: 100%;
+        font-weight: bold;
+    }
+
+    /* --- TABLEAU FLOTTANT (CRUCIAL POUR LE LOOK) --- */
+    .custom-table {
+        width: 100%;
+        border-collapse: separate; /* Permet l'espacement entre les lignes */
+        border-spacing: 0 12px; /* 0 horizontal, 12px vertical (l'espace gris) */
+    }
+
+    /* Header du tableau (Rouge) */
+    .custom-table thead tr th {
+        background-color: var(--primary-red);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+    /* Arrondir les coins du header */
+    .custom-table thead tr th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .custom-table thead tr th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+    /* Lignes de données (Blanches) */
+    .custom-table tbody tr {
+        background-color: white;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        transition: transform 0.1s;
+    }
+    
+    .custom-table tbody tr td {
+        padding: 18px 15px; /* Plus d'espace interne */
+        vertical-align: middle;
+        font-weight: 600;
+        color: #333;
+        border: none;
+    }
+
+    /* Arrondir les coins des lignes blanches */
+    .custom-table tbody tr td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
+    .custom-table tbody tr td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
+
+    /* Bouton + Détails */
+    .btn-details {
+        border: 2px solid #333;
+        color: #333;
+        background: transparent;
+        border-radius: 5px;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    .btn-details:hover {
+        background-color: #333;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-wrapper">
+    
+    <nav class="sidebar">
+        <div class="sidebar-logo-area">
+            <i class="fas fa-qrcode sidebar-logo-img"></i>
+        </div>
+        
+        <i class="fas fa-search sidebar-icon"></i>
+        <i class="fas fa-cube sidebar-icon active"></i>
+        <i class="fas fa-cog sidebar-icon"></i>
+        
+        <div class="sidebar-bottom">
+            <i class="fas fa-question-circle sidebar-icon mb-4"></i>
+            <div class="user-profile-block">
+                <i class="fas fa-user-circle"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        
+        <header class="top-header">
+            <div class="header-title">
+                <span>Inventaire</span>
+            </div>
+            <a href="{{ url_for('login') }}" class="text-white">
+                <i class="fas fa-sign-out-alt fa-lg"></i>
+            </a>
+        </header>
+
+        <div class="work-area">
+            
+            <div class="filter-buttons">
+                <button class="category-btn active">Tout</button>
+                <button class="category-btn">PC</button>
+                <button class="category-btn">Switchs</button>
+                <button class="category-btn">Routeurs</button>
+                <button class="category-btn">Pare-feux</button>
+                <button class="category-btn">Onduleurs</button>
+                <button class="category-btn">Serveurs</button>
+                <button class="category-btn">Raspberry</button>
+                <button class="category-btn">KUMANKits</button>
+                <button class="category-btn">Accessoires</button>
+            </div>
+
+            <div class="row search-row g-3">
+                <div class="col-md-2">
+                    <input type="text" class="search-input" placeholder="Marque">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="search-input" placeholder="SKU">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="search-input" placeholder="Niveau">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="search-input" placeholder="Ports">
+                </div>
+                <div class="col-md-2">
+                    <input type="text" class="search-input" placeholder="">
+                </div>
+                <div class="col-md-2">
+                    <button class="btn-reset">Reinitialiser</button>
+                </div>
+            </div>
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Marque</th>
+                        <th>Numéro de série</th>
+                        <th>Modèle</th>
+                        <th>Switch niv 3</th>
+                        <th>Ports ethernet</th>
+                        <th>Ports console</th>
+                        <th>Port base-T</th>
+                        <th>Détails</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>SA002</td>
+                        <td>Avaya</td>
+                        <td>LBNNTMJPW409N3</td>
+                        <td>5650TD</td>
+                        <td>OUI</td>
+                        <td>48</td>
+                        <td>1</td>
+                        <td>1000 Base-T</td>
+                        <td><button class="btn-details"><i class="fas fa-plus"></i></button></td>
+                    </tr>
+                    
+                    <tr style="height: 60px;"><td colspan="9"></td></tr>
+                    <tr style="height: 60px;"><td colspan="9"></td></tr>
+                    <tr style="height: 60px;"><td colspan="9"></td></tr>
+                    <tr style="height: 60px;"><td colspan="9"></td></tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

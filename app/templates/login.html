@@ -1,0 +1,30 @@
+{% extends "auth_layout.html" %}
+
+{% block auth_form %}
+    <h2 class="text-center mb-5 text-uppercase">Se Connecter</h2>
+    <form action="/dashboard" method="GET"> <div class="mb-3 position-relative">
+            <i class="fas fa-user input-icon"></i>
+            <input type="email" class="form-control form-control-custom py-2" placeholder="Email" required>
+        </div>
+
+        <div class="mb-3 position-relative">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" class="form-control form-control-custom py-2" placeholder="Mot de passe" required>
+            <span class="position-absolute end-0 top-0 mt-2 me-3"><i class="fas fa-eye"></i></span>
+        </div>
+
+        <div class="text-end mb-4">
+            <a href="#" style="color: #0056b3; text-decoration: none; font-weight: bold;">Mot de passe oublié ?</a>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-custom-red">CONNEXION</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block right_title %}Bienvenue sur notre application d'inventaire{% endblock %}
+{% block right_text %}Vous pourrez lister, réserver et voir le matériel disponible en temps réel{% endblock %}
+{% block right_question %}Vous n'avez pas encore de compte ?{% endblock %}
+{% block right_link_text %}S'INSCRIRE{% endblock %}
+{% block right_link_url %}/signup{% endblock %}
