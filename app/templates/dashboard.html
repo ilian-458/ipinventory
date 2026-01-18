@@ -4,17 +4,16 @@
 
 {% block extra_css %}
 <style>
-    /* --- VARIABLES & GLOBAL --- */
     :root {
         --primary-red: #dd1d2a; 
-        --sidebar-bg: #2C2C2C; /* Gris très foncé presque noir */
-        --content-bg: #E0E0E0; /* Le fond gris clair de la maquette */
+        --sidebar-bg: #2C2C2C;
+        --content-bg: #E0E0E0;
         --text-dark: #333;
     }
 
     body {
         background-color: var(--content-bg);
-        overflow: hidden; /* On gère le scroll dans la zone principale */
+        overflow: hidden;
     }
 
     .dashboard-wrapper {
@@ -23,9 +22,8 @@
         width: 100vw;
     }
 
-    /* --- 1. SIDEBAR (GAUCHE) --- */
     .sidebar {
-        width: 70px; /* Largeur fixe */
+        width: 70px;
         background-color: var(--sidebar-bg);
         display: flex;
         flex-direction: column;
@@ -35,11 +33,10 @@
         z-index: 100;
     }
 
-    /* Logo du haut dans la sidebar (Carré rouge avec motif) */
     .sidebar-logo-area {
         width: 70px;
         height: 60px;
-        background-color: white; /* Le petit carré blanc sous le logo */
+        background-color: white;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -50,7 +47,6 @@
         font-size: 2rem;
     }
 
-    /* Icones du menu */
     .sidebar-icon {
         color: #999;
         font-size: 1.4rem;
@@ -63,7 +59,6 @@
         color: white;
     }
 
-    /* Le bloc USER tout en bas (Rouge plein) */
     .sidebar-bottom {
         margin-top: auto;
         width: 100%;
@@ -74,7 +69,7 @@
     .user-profile-block {
         background-color: var(--primary-red);
         width: 100%;
-        height: 70px; /* Carré en bas */
+        height: 70px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -87,7 +82,6 @@
         background-color: #b71c1c;
     }
 
-    /* --- 2. HEADER (HAUT) --- */
     .top-header {
         background-color: var(--primary-red);
         color: white;
@@ -106,7 +100,6 @@
         gap: 15px;
     }
 
-    /* --- 3. CONTENU PRINCIPAL --- */
     .main-content {
         flex-grow: 1;
         display: flex;
@@ -120,32 +113,26 @@
         height: calc(100vh - 60px);
     }
 
-    /* --- FILTRES (BOUTONS ROUGES) --- */
     .filter-buttons {
         margin-bottom: 20px;
         display: flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         gap: 10px;
-        overflow-x: auto;
-        padding-bottom: 10px;
     }
     .category-btn {
         background-color: var(--primary-red);
         color: white;
         border: none;
-        border-radius: 5px; /* Coins légèrement arrondis */
-        padding: 8px 16px;
+        border-radius: 5px;
+        padding: 6px 15px;
         font-weight: 600;
-        font-size: 0.85rem;
+        font-size: 0.9rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        white-space: nowrap;
-        flex-shrink: 0;
     }
     .category-btn.active {
-        background-color: #a31515; /* Plus foncé pour l'actif */
+        background-color: #a31515;
     }
 
-    /* --- BARRE DE RECHERCHE (BLANCHE FLOTTANTE) --- */
     .search-row {
         margin-bottom: 25px;
     }
@@ -157,7 +144,7 @@
         width: 100%;
         color: #555;
         font-weight: 500;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Légère ombre */
+        box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
     .search-input::placeholder {
         color: #aaa;
@@ -173,14 +160,12 @@
         font-weight: bold;
     }
 
-    /* --- TABLEAU FLOTTANT (CRUCIAL POUR LE LOOK) --- */
     .custom-table {
         width: 100%;
-        border-collapse: separate; /* Permet l'espacement entre les lignes */
-        border-spacing: 0 12px; /* 0 horizontal, 12px vertical (l'espace gris) */
+        border-collapse: separate;
+        border-spacing: 0 12px;
     }
 
-    /* Header du tableau (Rouge) */
     .custom-table thead tr th {
         background-color: var(--primary-red);
         color: white;
@@ -190,11 +175,9 @@
         text-transform: uppercase;
         font-size: 0.85rem;
     }
-    /* Arrondir les coins du header */
     .custom-table thead tr th:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
     .custom-table thead tr th:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 
-    /* Lignes de données (Blanches) */
     .custom-table tbody tr {
         background-color: white;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
@@ -202,18 +185,16 @@
     }
     
     .custom-table tbody tr td {
-        padding: 18px 15px; /* Plus d'espace interne */
+        padding: 18px 15px;
         vertical-align: middle;
         font-weight: 600;
         color: #333;
         border: none;
     }
 
-    /* Arrondir les coins des lignes blanches */
     .custom-table tbody tr td:first-child { border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
     .custom-table tbody tr td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; }
 
-    /* Bouton + Détails */
     .btn-details {
         border: 2px solid #333;
         color: #333;
